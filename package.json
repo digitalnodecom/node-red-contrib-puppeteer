@@ -35,6 +35,7 @@
       "puppeteer-page-focus": "puppeteer/page/focus.js",
       "puppeteer-page-waitFor": "puppeteer/page/waitFor.js",
       "puppeteer-page-getCookies": "puppeteer/page/getCookies.js",
+      "puppeteer-page-setCookies": "puppeteer/page/setCookies.js",
       "puppeteer-page-close": "puppeteer/page/close.js",
       "puppeteer-page-keyboard-type": "puppeteer/page/keyboard/type.js",
       "puppeteer-page-keyboard-press": "puppeteer/page/keyboard/press.js",

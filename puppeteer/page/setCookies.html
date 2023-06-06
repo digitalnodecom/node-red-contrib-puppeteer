@@ -1,0 +1,52 @@
+<script type="text/javascript">
+    RED.nodes.registerType('puppeteer-page-setCookies', {
+      category: 'Puppeteer',
+      color: '#06d6a0',
+      defaults: {
+        name: { value: '' },
+        cookies: { value: '' },
+      },
+      inputs:1,
+      outputs:1,
+      icon: "setCookies.svg",
+      label: function() {
+        let label = this.name == "" ? "Set Cookies" : this.name
+        return label || "Set Cookies"
+      },
+      paletteLabel: "Set Cookies",
+    });
+</script>
+
+<script type="text/x-red" data-template-name="puppeteer-page-setCookies">
+  <div class="form-row">
+      <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+      <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-cookies"><i class="fa fa-cubes"></i> Cookies</label>
+    <input type="text" id="node-input-cookies" style="width:70%;" placeholder="[{Cookie}, {Cookie}, ...]" />
+  </div>
+  <div class="form-tips">
+    <span data-i18n="[html]tip1">This node sets the cookies on the current page object. The input page object should be passed as <code>msg.puppeteer.page</code>. The cookies should be a list of cookie objects where each one has the following properties and they should be passed in as <code>msg.payload</code>, or if directly into the input field it should be a valid JSON list:
+      <ul>
+        <li><code>name: <span style="color: blue">string</span> | <u style="color: darkgreen">required</u></code></li>
+        <li><code>value: <span style="color: blue">string</span> | <u style="color: darkgreen">required</u></code></li>
+        <li><code>domain: <span style="color: blue">string</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: '{domain from page object}'</span></code></li>
+        <li><code>path: <span style="color: blue">string</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: '/'</span></code></li>
+        <li><code>expires: <span style="color: blue">number</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: -1</span></code></li>
+        <li><code>size: <span style="color: blue">number</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: {cookie size}</span></code></li>
+        <li><code>httpOnly: <span style="color: blue">boolean</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: false</span></code></li>
+        <li><code>secure: <span style="color: blue">boolean</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: true</span></code></li>
+        <li><code>session: <span style="color: blue">boolean</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: true</span></code></li>
+        <li><code>sameSite: <span style="color: blue">string</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: undefined</span></code></li>
+        <li><code>sameParty: <span style="color: blue">boolean</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: false</span></code></li>
+        <li><code>sourceScheme: <span style="color: blue">string</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: 'Secure'</span></code></li>
+        <li><code>sourcePort: <span style="color: blue">number</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: 443</span></code></li>
+    </span>
+
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="puppeteer-page-setCookies">
+  This node sets cookies to the passed puppeteer page object
+</script>
