@@ -26,11 +26,31 @@ module.exports = function (RED) {
         }
         msg.puppeteer.page = (await msg.puppeteer.browser.pages())[0]
         msg.puppeteer.page.setDefaultTimeout(config.timeout)
+
+        // Getting the cookies from input
+        let cookies = config.cookies !== "" ? config.cookies : JSON.stringify(msg.payload);
+        // Parsing the cookies
+        try {
+          cookies = JSON.parse(cookies);
+        } catch (e) {
+          cookies = [];
+        }
+
+        // If cookies are passed through on lauch, set them for the page object
+        try {
+          // Setting the cookies
+          for (const cookie of cookies) {
+            await msg.puppeteer.page.setCookie(cookie);
+          }
+        } catch (e) {
+          this.status({fill:"yellow",shape:"dot",text:e});
+        }
+
         this.send(msg)
       } catch (e) {
         this.status({fill:"red",shape:"ring",text:e});
         this.error(e)
-      } 
+      }
     })
     this.on('close', function() {
       this.status({});
