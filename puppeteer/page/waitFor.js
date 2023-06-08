@@ -1,7 +1,7 @@
 module.exports = function (RED) {
   function PuppeteerPageWaitFor (config) {
     RED.nodes.createNode(this, config)
-    
+
     // Retrieve the config node
     this.on('input', async function (msg) {
       try {
@@ -9,11 +9,13 @@ module.exports = function (RED) {
         this.status({fill:"green",shape:"dot",text:`Wait for ${selector}`});
         await msg.puppeteer.page.waitForSelector(selector)
         this.status({fill:"grey",shape:"ring",text:`${selector} exists`});
-        this.send(msg) 
+        msg.error = null;
       } catch (e) {
         this.status({fill:"red",shape:"ring",text:e});
         this.error(e)
+        msg.error = e;
       }
+      this.send(msg)
     })
     this.on('close', function() {
       this.status({});
