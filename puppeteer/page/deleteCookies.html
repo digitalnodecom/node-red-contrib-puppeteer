@@ -1,0 +1,33 @@
+<script type="text/javascript">
+    RED.nodes.registerType('puppeteer-page-deleteCookies', {
+      category: 'Puppeteer',
+      color: '#06d6a0',
+      defaults: {
+        name: { value: '' },
+      },
+      inputs:1,
+      outputs:1,
+      icon: "deleteCookies.svg",
+      label: function() {
+        let label = this.name == "" ? "Delete Cookies" : this.name
+        return label || "Delete Cookies"
+      },
+      paletteLabel: "Delete Cookies",
+    });
+</script>
+
+<script type="text/x-red" data-template-name="puppeteer-page-deleteCookies">
+  <div class="form-row">
+      <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+      <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
+  </div>
+  <div class="form-tips">
+    <span data-i18n="[html]tip1">
+      This node deletes all cookies using the passed page object as input (<code>msg.puppeteer.page</code>).
+    </span>
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="puppeteer-page-deleteCookies">
+  This node deletes all the cookies from the passed puppeteer page object
+</script>
