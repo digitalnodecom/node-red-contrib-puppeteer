@@ -1,11 +1,14 @@
 module.exports = function (RED) {
   function PuppeteerPageGoto (config) {
     RED.nodes.createNode(this, config)
-    
+
     // Retrieve the config node
     this.on('input', async function (msg) {
       try {
         let url = config.urltype!="str"?eval(config.urltype+"."+config.url):config.url
+        if(config.urltype == 'flow' || config.urltype == 'global') {
+          url = this.context()[config.urltype].get(config.urltype);
+        }
         this.status({fill:"green",shape:"dot",text:`Go to ${url}`});
         await msg.puppeteer.page.goto(url,config)
         this.status({fill:"grey",shape:"ring",text:url});
