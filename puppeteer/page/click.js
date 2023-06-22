@@ -7,12 +7,30 @@ module.exports = function (RED) {
     this.on('input', async function (msg) {
       try {
         let selector = config.selectortype!="str"?eval(config.selectortype+"."+config.selector):config.selector
+        let downloadPath = (config.downloadPathType && config.downloadPathtype!="str")?eval(config.downloadPathtype+"."+config.downloadPath):config.downloadPath
+        if(downloadPath && downloadPath != '') {
+          await msg.puppeteer.page.setRequestInterception(true);
+          msg.puppeteer.page.on('request', interceptedRequest => {
+            if (interceptedRequest.url().endsWith('.zip')) {
+              interceptedRequest.continue({ url: 'chrome://downloads/' });
+            } else {
+              interceptedRequest.continue();
+            }
+          });
+        }
         this.status({fill:"green",shape:"dot",text:`Wait for ${selector}`});
         await msg.puppeteer.page.waitForSelector(selector)
         this.status({fill:"green",shape:"dot",text:`Click ${selector}`});
         await msg.puppeteer.page.click(selector,config)
+        if(downloadPath && downloadPath != '') {
+          // Set the download path
+          await msg.puppeteer.page._client.send('Page.setDownloadBehavior', {
+            behavior: 'allow',
+            downloadPath: downloadPath,
+          });
+        }
         this.status({fill:"grey",shape:"ring",text:`Clicked ${selector}`});
-        this.send(msg) 
+        this.send(msg)
       } catch(e) {
           this.status({fill:"red",shape:"ring",text:e});
           this.error(e)
