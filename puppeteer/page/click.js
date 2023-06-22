@@ -7,7 +7,14 @@ module.exports = function (RED) {
     this.on('input', async function (msg) {
       try {
         let selector = config.selectortype!="str"?eval(config.selectortype+"."+config.selector):config.selector
-        let downloadPath = (config.downloadPathType && config.downloadPathtype!="str")?eval(config.downloadPathtype+"."+config.downloadPath):config.downloadPath
+        if(config.selectortype == 'flow' || config.selectortype == 'global') {
+          selector = this.context()[config.selectortype].get(config.selectortype);
+        }
+        let downloadPath = (config.downloadPathtype=="msg")?eval(config.downloadPathtype+"."+config.downloadPath):config.downloadPath
+        if(config.downloadPathtype == 'flow' || config.downloadPathtype == 'global') {
+          downloadPath = this.context()[config.downloadPathtype].get(config.downloadPath);
+        }
+        this.warn(downloadPath);
         if(downloadPath && downloadPath != '') {
           await msg.puppeteer.page.setRequestInterception(true);
           msg.puppeteer.page.on('request', interceptedRequest => {
