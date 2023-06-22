@@ -1,11 +1,14 @@
 module.exports = function (RED) {
   function PuppeteerPageFocus (config) {
     RED.nodes.createNode(this, config)
-    
+
     // Retrieve the config node
     this.on('input', async function (msg) {
       try {
         let selector = config.selectortype!="str"?eval(config.selectortype+"."+config.selector):config.selector
+        if(config.selectortype == 'flow' || config.selectortype == 'global') {
+          selector = this.context()[config.selectortype].get(config.selectortype);
+        }
         this.status({fill:"green",shape:"dot",text:`Wait for ${selector}`});
         await msg.puppeteer.page.waitForSelector(selector)
         this.status({fill:"green",shape:"dot",text:`Focus to ${selector}`});
