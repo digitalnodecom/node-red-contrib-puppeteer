@@ -1,35 +1,73 @@
-const puppeteer = require('puppeteer')
-
+const puppeteer = require("puppeteer");
 
 module.exports = function (RED) {
-  function PuppeteerBrowserLaunch (config) {
-    RED.nodes.createNode(this, config)
-    config.defaultViewport = null;
-    config.ignoreHTTPSErrors = true;
-    // Retrieve the config node
-    this.on('input', async function (msg) {
+  function PuppeteerBrowserLaunch(nodeConfig) {
+    RED.nodes.createNode(this, nodeConfig);
+    nodeConfig.defaultViewport = null; // Setting the node's default viewport
+    nodeConfig.ignoreHTTPSErrors = true; // Setting the node's ignoreHttpsErrors property
+    var node = this; // Referencing the current node
+
+    this.on("input", async function (msg, send, done) {
       try {
-        this.status({fill:"green",shape:"dot",text:"Launching..."});
-        if (config.debugport!=0) {
+        node.status({ fill: "blue", shape: "dot", text: "Launching..." });
+        // If debugport is specified
+        if (nodeConfig.debugport != 0) {
           try {
-            msg.puppeteer = {browser:await puppeteer.connect({...config,browserURL:`http://127.0.0.1:${config.debugport}`})}
-            this.status({fill:"grey",shape:"ring",text:"Attached to existing browser"});
-          } catch (e) {
-            this.status({fill:"green",shape:"dot",text:"No existing browser detected..."});
-            msg.puppeteer = {browser:await puppeteer.launch( {...config, args: [`--remote-debugging-port=${config.debugport}`] } )}
-            this.status({fill:"grey",shape:"ring",text:"Launched"});
+            // Trying to connect to already existing
+            // browser with node's config
+            msg.puppeteer = {
+              browser: await puppeteer.connect({
+                ...nodeConfig,
+                browserURL: `http://127.0.0.1:${nodeConfig.debugport}`,
+              }),
+            };
+
+            node.status({
+              fill: "green",
+              shape: "dot",
+              text: "Attached to existing browser",
+            });
+          } catch (e) { // If there is no existing browser
+            node.status({
+              fill: "gray",
+              shape: "dot",
+              text: "No existing browser detected, launching new one...",
+            });
+
+            // Launch a new browser with node's config
+            msg.puppeteer = {
+              browser: await puppeteer.launch({
+                ...nodeConfig,
+                args: [`--remote-debugging-port=${nodeConfig.debugport}`],
+              }),
+            };
+            // Browser launched sucessfully
+            node.status({ fill: "green", shape: "dot", text: "Launched" });
           }
         }
-        if (msg.puppeteer==undefined) {
-          msg.puppeteer = {browser:await puppeteer.launch( {...config, args: [`--remote-debugging-port=${config.debugport}`] } )}
-          this.status({fill:"grey",shape:"ring",text:"Launched"});
+        // If there is no existing browser
+        // or rather the puppeteer message property is undefined
+        if (msg.puppeteer == undefined) {
+          // Launch a new browser with node's config
+          msg.puppeteer = {
+            browser: await puppeteer.launch({
+              ...nodeConfig,
+              args: [`--remote-debugging-port=${nodeConfig.debugport}`],
+            }),
+          };
+          // Browser launched sucessfully
+          node.status({ fill: "green", shape: "dot", text: "Launched" });
         }
-        msg.puppeteer.page = (await msg.puppeteer.browser.pages())[0]
-        msg.puppeteer.page.setDefaultTimeout(config.timeout)
+        // Get the page and set it to the puppeteer property of msg
+        msg.puppeteer.page = (await msg.puppeteer.browser.pages())[0];
+        msg.puppeteer.page.setDefaultTimeout(nodeConfig.timeout);
 
-        // Getting the cookies from input
-        let cookies = config.cookies !== "" ? config.cookies : JSON.stringify(msg.payload);
-        // Parsing the cookies
+        // Get the cookies from input
+        let cookies =
+          nodeConfig.cookies !== ""
+            ? nodeConfig.cookies
+            : JSON.stringify(msg.payload);
+        // Parse the cookies
         try {
           cookies = JSON.parse(cookies);
         } catch (e) {
@@ -43,26 +81,38 @@ module.exports = function (RED) {
             await msg.puppeteer.page.setCookie(cookie);
           }
         } catch (e) {
-          this.status({fill:"yellow",shape:"dot",text:e});
+          node.status({ fill: "yellow", shape: "dot", text: e });
         }
+        // Sending the msg
+        send(msg);
 
-        this.send(msg)
       } catch (e) {
-        this.status({fill:"red",shape:"ring",text:e});
-        this.error(e)
+        // If an error occured
+        node.error(e);
+        // Update the status
+        node.status({ fill: "red", shape: "dot", text: e });
+        // And update the message error property
+        msg.error = e;
+        send(msg);
       }
-    })
-    this.on('close', function() {
-      this.status({});
+
+      // Clear status of the node
+      setTimeout(() => {
+        done();
+        node.status({});
+      }, (msg.error) ? 10000 : 3000);
+    });
+    this.on("close", function () {
+      node.status({});
     });
     oneditprepare: function oneditprepare() {
-      $("#node-input-timeout").val(config.timeout)
-      $("#node-input-slowMo").val(config.slowMo)
-      $("#node-input-headless").val(config.headless)
-      $("#node-input-debugport").val(config.debugport)
-      $("#node-input-devtools").val(config.devtools)
-      $("#node-input-name").val(config.name)
+      $("#node-input-timeout").val(nodeConfig.timeout);
+      $("#node-input-slowMo").val(nodeConfig.slowMo);
+      $("#node-input-headless").val(nodeConfig.headless);
+      $("#node-input-debugport").val(nodeConfig.debugport);
+      $("#node-input-devtools").val(nodeConfig.devtools);
+      $("#node-input-name").val(nodeConfig.name);
     }
   }
-  RED.nodes.registerType('puppeteer-browser-launch', PuppeteerBrowserLaunch)
-}
+  RED.nodes.registerType("puppeteer-browser-launch", PuppeteerBrowserLaunch);
+};
