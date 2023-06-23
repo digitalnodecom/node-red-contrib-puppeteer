@@ -1,31 +1,48 @@
-const puppeteer = require('puppeteer')
-
+const puppeteer = require("puppeteer");
 
 module.exports = function (RED) {
-  function PuppeteerBrowserClose (config) {
-    RED.nodes.createNode(this, config)
-    this.name = config.name
-    var node = this
+  function PuppeteerBrowserClose(nodeConfig) {
+    RED.nodes.createNode(this, nodeConfig);
+    this.name = nodeConfig.name; // Getting the node's name
+    var node = this; // Referencing the current node
 
-    // Retrieve the config node
-    this.on('input', async function (msg) {
+    this.on("input", async function (msg, send, done) {
       try {
-        this.status({fill:"green",shape:"dot",text:`Closing browser...`});
-        await msg.puppeteer.browser.close()
-        this.status({fill:"grey",shape:"ring",text:`Browser closed`});
-        delete msg.puppeteer
-        node.send(msg)
+        node.status({
+          fill: "blue",
+          shape: "dot",
+          text: `Closing browser...`,
+        });
+        // Closing browser
+        await msg.puppeteer.browser.close();
+        // Browser closed without any errors
+        node.status({ fill: "green", shape: "dot", text: `Browser closed successfully` });
+        // Deleting the msg.puppeteer object
+        delete msg.puppeteer;
+        // Sending the msg
+        send(msg);
+
       } catch (e) {
-        this.status({fill:"red",shape:"ring",text:e});
-        node.error(e)
+        // If an error occured
+        node.error(e);
+        // Update the status
+        node.status({ fill: "red", shape: "dot", text: e });
+        // And update the message error property
+        msg.error = e;
+        send(msg);
       }
-    })
-    this.on('close', function() {
-      this.status({});
+      // Clear status of the node
+      setTimeout(() => {
+        done();
+        node.status({});
+      }, (msg.error) ? 10000 : 3000);
+    });
+    this.on("close", function () {
+      node.status({});
     });
     oneditprepare: function oneditprepare() {
-      $("#node-input-name").val(this.name)
+      $("#node-input-name").val(this.name);
     }
   }
-  RED.nodes.registerType('puppeteer-browser-close', PuppeteerBrowserClose)
-}
+  RED.nodes.registerType("puppeteer-browser-close", PuppeteerBrowserClose);
+};
