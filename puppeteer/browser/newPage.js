@@ -1,27 +1,46 @@
 module.exports = function (RED) {
-  function PuppeteerBrowserNewPage (config) {
-    RED.nodes.createNode(this, config)
-    var node = this
+  function PuppeteerBrowserNewPage(nodeConfig) {
+    RED.nodes.createNode(this, nodeConfig);
+    var node = this; // Referencing the current node
 
-    // Retrieve the config node
-    this.on('input', async function (msg) {
+    this.on("input", async function (msg, send, done) {
       try {
-        this.status({fill:"green",shape:"dot",text:`Opening new Tab...`});
-        msg.puppeteer.page = await msg.puppeteer.browser.newPage()
-        msg.puppeteer.page.setDefaultTimeout(config.timeout)
-        this.status({fill:"grey",shape:"ring",text:`New Tab created`});
-        node.send(msg) 
-      } catch (e) {
-        this.status({fill:"red",shape:"ring",text:e});
-        node.error(e)
+        node.status({
+          fill: "blue",
+          shape: "dot",
+          text: `Opening new Tab...`,
+        });
+        // Opening new page
+        msg.puppeteer.page = await msg.puppeteer.browser.newPage();
+        msg.puppeteer.page.setDefaultTimeout(nodeConfig.timeout);
+
+        // New page opened (tab created) succesfully
+        node.status({ fill: "green", shape: "dot", text: `New Tab created` });
+        // Sending the msg
+        send(msg);
+
+      } catch (e) { // If an error occurred during opening a new page/tab
+        // If an error occured
+        node.error(e);
+        // Update the status
+        node.status({ fill: "red", shape: "dot", text: e });
+        // And update the message error property
+        msg.error = e;
+        send(msg);
       }
-    })
-    this.on('close', function() {
-      this.status({});
+
+      // Clear status of the node
+      setTimeout(() => {
+        done();
+        node.status({});
+      }, (msg.error) ? 10000 : 3000);
+    });
+    this.on("close", function () {
+      node.status({});
     });
     oneditprepare: function oneditprepare() {
-      $("#node-input-name").val(this.name)
+      $("#node-input-name").val(this.name);
     }
   }
-  RED.nodes.registerType('puppeteer-browser-newPage', PuppeteerBrowserNewPage)
-}
+  RED.nodes.registerType("puppeteer-browser-newPage", PuppeteerBrowserNewPage);
+};
