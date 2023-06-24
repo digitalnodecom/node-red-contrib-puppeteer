@@ -1,30 +1,51 @@
 module.exports = function (RED) {
-  function PuppeteerPageDeleteCookies (config) {
-    RED.nodes.createNode(this, config)
+  function PuppeteerPageDeleteCookies(nodeConfig) {
+    RED.nodes.createNode(this, nodeConfig);
+    var node = this; // Referencing the current node
 
     // Retrieve the config node
-    this.on('input', async function (msg) {
+    this.on("input", async function (msg, send, done) {
       try {
+        // Get all cookies
         const cookies = await msg.puppeteer.page.cookies();
+        // Delete all cookies
         for (const cookie of cookies) {
           await msg.puppeteer.page.deleteCookie(deleteCookieObject(cookie));
         }
-        this.send(msg)
+        // Send the updated msg
+        send(msg);
       } catch (e) {
-        this.status({fill:"red",shape:"ring",text:e});
-        this.error(e)
+        // If an error occured
+        node.error(e);
+        // Update the status
+        node.status({ fill: "red", shape: "dot", text: e });
+        // And update the message error property
+        msg.error = e;
+        send(msg);
       }
-    })
-    this.on('close', function() {
-      this.status({});
+
+      // Clear status of the node
+      setTimeout(() => {
+        done();
+        node.status({});
+      }, (msg.error) ? 10000 : 3000);
+    });
+    this.on("close", function () {
+      node.status({});
     });
   }
-  RED.nodes.registerType('puppeteer-page-deleteCookies', PuppeteerPageDeleteCookies)
-}
+  RED.nodes.registerType(
+    "puppeteer-page-deleteCookies",
+    PuppeteerPageDeleteCookies
+  );
+};
 
+// Function to consctruct delete cookie object for puppeteer
 function deleteCookieObject(cookie) {
   return {
-    url: `${cookie.sourcePort === 443 ? 'https://' : 'http://'}${cookie.domain}${cookie.path}`,
-    name: cookie.name
+    url: `${cookie.sourcePort === 443 ? "https://" : "http://"}${
+      cookie.domain
+    }${cookie.path}`,
+    name: cookie.name,
   };
 }
