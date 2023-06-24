@@ -1,32 +1,72 @@
 module.exports = function (RED) {
-  function PuppeteerPageFocus (config) {
-    RED.nodes.createNode(this, config)
+  function PuppeteerPageFocus(nodeConfig) {
+    RED.nodes.createNode(this, nodeConfig);
+    var node = this; // Referencing the current node
 
-    // Retrieve the config node
-    this.on('input', async function (msg) {
+    this.on("input", async function (msg, send, done) {
       try {
-        let selector = config.selectortype!="str"?eval(config.selectortype+"."+config.selector):config.selector
-        if(config.selectortype == 'flow' || config.selectortype == 'global') {
-          selector = this.context()[config.selectortype].get(config.selectortype);
+        // Parsing the selector from string input or from msg object
+        let selector =
+          nodeConfig.selectortype != "str"
+            ? eval(nodeConfig.selectortype + "." + nodeConfig.selector)
+            : nodeConfig.selector;
+        // If the type of selector is set to flow or global, it needs to be parsed differently
+        if (
+          nodeConfig.selectortype == "flow" ||
+          nodeConfig.selectortype == "global"
+        ) {
+          // Parsing the selector
+          selector = this.context()[nodeConfig.selectortype].get(
+            nodeConfig.selectortype
+          );
         }
-        this.status({fill:"green",shape:"dot",text:`Wait for ${selector}`});
-        await msg.puppeteer.page.waitForSelector(selector)
-        this.status({fill:"green",shape:"dot",text:`Focus to ${selector}`});
-        await msg.puppeteer.page.focus(selector)
-        this.status({fill:"grey",shape:"ring",text:`Focused ${selector}`});
-        this.send(msg)
+
+        // Waiting for the provided selector
+        node.status({
+          fill: "blue",
+          shape: "ring",
+          text: `Wait for ${selector}`,
+        });
+        await msg.puppeteer.page.waitForSelector(selector);
+
+        // Focusing on the provided selector
+        node.status({
+          fill: "blue",
+          shape: "dot",
+          text: `Focus to ${selector}`,
+        });
+        await msg.puppeteer.page.focus(selector);
+
+        // Focused successfully
+        node.status({
+          fill: "green",
+          shape: "dot",
+          text: `Focused ${selector}`,
+        });
+        // Sending the msg
+        send(msg);
       } catch (e) {
-        this.status({fill:"red",shape:"ring",text:e});
-        this.error(e)
+        // If an error occured
+        node.error(e);
+        // Update the status
+        node.status({ fill: "red", shape: "dot", text: e });
+        // And update the message error property
+        msg.error = e;
+        send(msg);
       }
-    }
-    )
-    this.on('close', function() {
-      this.status({});
+
+      // Clear status of the node
+      setTimeout(() => {
+        done();
+        node.status({});
+      }, (msg.error) ? 10000 : 3000);
+    });
+    this.on("close", function () {
+      node.status({});
     });
     oneditprepare: function oneditprepare() {
-      $("#node-input-name").val(this.name)
+      $("#node-input-name").val(this.name);
     }
   }
-  RED.nodes.registerType('puppeteer-page-focus', PuppeteerPageFocus)
-}
+  RED.nodes.registerType("puppeteer-page-focus", PuppeteerPageFocus);
+};
