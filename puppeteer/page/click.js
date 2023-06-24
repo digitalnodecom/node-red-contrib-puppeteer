@@ -1,57 +1,114 @@
-
 module.exports = function (RED) {
-  function PuppeteerPageClick (config) {
-    RED.nodes.createNode(this, config)
-    // Retrieve the config node
-    config.clickCount = parseInt(config.clickCount)
-    this.on('input', async function (msg) {
+  function PuppeteerPageClick(nodeConfig) {
+    RED.nodes.createNode(this, nodeConfig);
+    // Parse the click count to integer
+    nodeConfig.clickCount = parseInt(nodeConfig.clickCount);
+    var node = this; // Referencing the current node
+
+    this.on("input", async function (msg, send, done) {
       try {
-        let selector = config.selectortype!="str"?eval(config.selectortype+"."+config.selector):config.selector
-        if(config.selectortype == 'flow' || config.selectortype == 'global') {
-          selector = this.context()[config.selectortype].get(config.selectortype);
+        // Parsing the selector from string input or from msg object
+        let selector =
+          nodeConfig.selectortype != "str"
+            ? eval(nodeConfig.selectortype + "." + nodeConfig.selector)
+            : nodeConfig.selector;
+        // If the type of selector is set to flow or global, it needs to be parsed differently
+        if (
+          nodeConfig.selectortype == "flow" ||
+          nodeConfig.selectortype == "global"
+        ) {
+          // Parsing the selector
+          selector = this.context()[nodeConfig.selectortype].get(
+            nodeConfig.selectortype
+          );
         }
-        let downloadPath = (config.downloadPathtype=="msg")?eval(config.downloadPathtype+"."+config.downloadPath):config.downloadPath
-        if(config.downloadPathtype == 'flow' || config.downloadPathtype == 'global') {
-          downloadPath = this.context()[config.downloadPathtype].get(config.downloadPath);
+
+        // Parsing the downloadPath from string input or from msg object
+        let downloadPath =
+          nodeConfig.downloadPathtype == "msg"
+            ? eval(nodeConfig.downloadPathtype + "." + nodeConfig.downloadPath)
+            : nodeConfig.downloadPath;
+        // If the type of downloadPath is set to flow or global, it needs to be parsed differently
+        if (
+          nodeConfig.downloadPathtype == "flow" ||
+          nodeConfig.downloadPathtype == "global"
+        ) {
+          // Parsing the downloadPath
+          downloadPath = this.context()[nodeConfig.downloadPathtype].get(
+            nodeConfig.downloadPath
+          );
         }
-        this.warn(downloadPath);
-        if(downloadPath && downloadPath != '') {
+
+        // If download path is defined
+        if (downloadPath && downloadPath != "") {
+          // Enable requests interception
           await msg.puppeteer.page.setRequestInterception(true);
-          msg.puppeteer.page.on('request', interceptedRequest => {
-            if (interceptedRequest.url().endsWith('.zip')) {
-              interceptedRequest.continue({ url: 'chrome://downloads/' });
+
+          // When request comes
+          msg.puppeteer.page.on("request", (interceptedRequest) => {
+            // And for everything that ends with zip (for now only supported file type)
+            if (interceptedRequest.url().endsWith(".zip")) {
+              interceptedRequest.continue({ url: "chrome://downloads/" }); // Continue to downloads url where download path is defined
             } else {
-              interceptedRequest.continue();
+              interceptedRequest.continue(); // Continue the requets as usual
             }
           });
         }
-        this.status({fill:"green",shape:"dot",text:`Wait for ${selector}`});
-        await msg.puppeteer.page.waitForSelector(selector)
-        this.status({fill:"green",shape:"dot",text:`Click ${selector}`});
-        await msg.puppeteer.page.click(selector,config)
-        if(downloadPath && downloadPath != '') {
-          // Set the download path
-          await msg.puppeteer.page._client.send('Page.setDownloadBehavior', {
-            behavior: 'allow',
+        // Waiting for the specified selector
+        node.status({
+          fill: "blue",
+          shape: "ring",
+          text: `Wait for ${selector}`,
+        });
+        await msg.puppeteer.page.waitForSelector(selector);
+
+        // Clicking on the specified selector
+        node.status({ fill: "blue", shape: "dot", text: `Click ${selector}` });
+        await msg.puppeteer.page.click(selector, nodeConfig);
+
+        // If download path was specified
+        if (downloadPath && downloadPath != "") {
+          // Set the download path and download the file to it
+          await msg.puppeteer.page._client.send("Page.setDownloadBehavior", {
+            behavior: "allow",
             downloadPath: downloadPath,
           });
         }
-        this.status({fill:"grey",shape:"ring",text:`Clicked ${selector}`});
-        this.send(msg)
-      } catch(e) {
-          this.status({fill:"red",shape:"ring",text:e});
-          this.error(e)
+
+        // Selector clicked sucessfully
+        node.status({
+          fill: "green",
+          shape: "dot",
+          text: `Clicked ${selector}`,
+        });
+        // Sending the msg
+        send(msg);
+
+      } catch (e) {
+        // If an error occured
+        node.error(e);
+        // Update the status
+        node.status({ fill: "red", shape: "dot", text: e });
+        // And update the message error property
+        msg.error = e;
+        send(msg);
       }
-    })
-    this.on('close', function() {
-      this.status({});
+
+      // Clear status of the node
+      setTimeout(() => {
+        done();
+        node.status({});
+      }, (msg.error) ? 10000 : 3000);
+    });
+    this.on("close", function () {
+      node.status({});
     });
     oneditprepare: function oneditprepare() {
-      $("#node-input-clickCount").val(config.clickCount)
-      $("#node-input-delay").val(config.delay)
-      $("#node-input-button").val(config.button)
-      $("#node-input-name").val(config.name)
+      $("#node-input-clickCount").val(nodeConfig.clickCount);
+      $("#node-input-delay").val(nodeConfig.delay);
+      $("#node-input-button").val(nodeConfig.button);
+      $("#node-input-name").val(nodeConfig.name);
     }
   }
-  RED.nodes.registerType('puppeteer-page-click', PuppeteerPageClick)
-}
+  RED.nodes.registerType("puppeteer-page-click", PuppeteerPageClick);
+};
