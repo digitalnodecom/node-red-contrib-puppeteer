@@ -1,30 +1,53 @@
 module.exports = function (RED) {
-  function PuppeteerPageGoto (config) {
-    RED.nodes.createNode(this, config)
+  function PuppeteerPageGoto(nodeConfig) {
+    RED.nodes.createNode(this, nodeConfig);
+    var node = this; // Referencing the current node
 
-    // Retrieve the config node
-    this.on('input', async function (msg) {
+    this.on("input", async function (msg, send, done) {
       try {
-        let url = config.urltype!="str"?eval(config.urltype+"."+config.url):config.url
-        if(config.urltype == 'flow' || config.urltype == 'global') {
-          url = this.context()[config.urltype].get(config.urltype);
+        // Parsing the url from string input or from msg object
+        let url =
+          nodeConfig.urltype != "str"
+            ? eval(nodeConfig.urltype + "." + nodeConfig.url)
+            : nodeConfig.url;
+        // If the type of url is set to flow or global, it needs to be parsed differently
+        if (nodeConfig.urltype == "flow" || nodeConfig.urltype == "global") {
+          // Parsing the url
+          url = this.context()[nodeConfig.urltype].get(nodeConfig.urltype);
         }
-        this.status({fill:"green",shape:"dot",text:`Go to ${url}`});
-        await msg.puppeteer.page.goto(url,config)
-        this.status({fill:"grey",shape:"ring",text:url});
-        this.send(msg)
+
+        // Visiting URL
+        node.status({ fill: "blue", shape: "dot", text: `Go to ${url}` });
+        await msg.puppeteer.page.goto(url, nodeConfig);
+
+        // URL visited
+        node.status({ fill: "green", shape: "dot", text: url });
+        // Sending the msg
+        send(msg);
+
       } catch (e) {
-        this.status({fill:"red",shape:"ring",text:e});
-        this.error(e)
+        // If an error occured
+        node.error(e);
+        // Update the status
+        node.status({ fill: "red", shape: "dot", text: e });
+        // And update the message error property
+        msg.error = e;
+        send(msg);
       }
-    })
-    this.on('close', function() {
-      this.status({});
+
+      // Clear status of the node
+      setTimeout(() => {
+        done();
+        node.status({});
+      }, (msg.error) ? 10000 : 3000);
+    });
+    this.on("close", function () {
+      node.status({});
     });
     oneditprepare: function oneditprepare() {
-      $("#node-input-name").val(this.name)
-      $("#node-input-waitUntil").val(this.waitUntil)
+      $("#node-input-name").val(this.name);
+      $("#node-input-waitUntil").val(this.waitUntil);
     }
   }
-  RED.nodes.registerType('puppeteer-page-goto', PuppeteerPageGoto)
-}
+  RED.nodes.registerType("puppeteer-page-goto", PuppeteerPageGoto);
+};
