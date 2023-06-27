@@ -1,26 +1,25 @@
 <script type="text/javascript">
-    RED.nodes.registerType('puppeteer-browser-close', {
-      category: 'Puppeteer',
-      color: '#ffd166',
-      defaults: {
-        name: {value: ''},
-      },
-      inputs:1,
-      outputs:1,
-      icon: "closechrome.svg",
-      label: function() {
-          return this.name || "Close Browser";
-      },
-      paletteLabel: "Close Browser"
-    });
+  RED.nodes.registerType("puppeteer-browser-close", {
+    category: "Puppeteer",
+    color: "#ffd166",
+    defaults: {
+      name: { value: "" },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "closechrome.svg",
+    label: function () {
+      return this.name || "Close Browser";
+    },
+    paletteLabel: "Close Browser",
+  });
 </script>
 
 <script type="text/x-red" data-template-name="puppeteer-browser-close">
-    <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
-    </div>
+  <div class="form-row">
+      <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+      <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
+  </div>
 </script>
 
-<script type="text/x-red" data-help-name="puppeteer-browser-close">
-</script>
+<script type="text/x-red" data-help-name="puppeteer-browser-close"></script>

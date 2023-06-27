@@ -1,28 +1,33 @@
 <script type="text/javascript">
-    RED.nodes.registerType('puppeteer-page-keyboard-type', {
-      category: 'Puppeteer',
-      color: '#fe6d73',
-      defaults: {
-        name: { value: '' },
-        text:  { value: '', required: true },
-        texttype: {value:'str'}
-      },
-      inputs:1,
-      outputs:1,
-      icon: "keyboard.svg",
-      label: function() {
-          let label = this.name==""?this.texttype != "str"?this.texttype+"."+this.text:this.text:this.name
-          return label || "Typing"
-      },
-      paletteLabel: "Typing",
-      oneditprepare: function() {
-        $("#node-input-text").typedInput({
-          type:"str",
-          types:["str","msg","flow","global"],
-          typeField: "#node-input-texttype"
-        })
-      }
-    });
+  RED.nodes.registerType("puppeteer-page-keyboard-type", {
+    category: "Puppeteer",
+    color: "#fe6d73",
+    defaults: {
+      name: { value: "" },
+      text: { value: "", required: true },
+      texttype: { value: "str" },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "keyboard.svg",
+    label: function () {
+      let label =
+        this.name == ""
+          ? this.texttype != "str"
+            ? this.texttype + "." + this.text
+            : this.text
+          : this.name;
+      return label || "Typing";
+    },
+    paletteLabel: "Typing",
+    oneditprepare: function () {
+      $("#node-input-text").typedInput({
+        type: "str",
+        types: ["str", "msg", "flow", "global"],
+        typeField: "#node-input-texttype",
+      });
+    },
+  });
 </script>
 
 <script type="text/x-red" data-template-name="puppeteer-page-keyboard-type">
@@ -37,5 +42,7 @@
   </div>
 </script>
 
-<script type="text/x-red" data-help-name="puppeteer-page-keyboard-type">
-</script>
+<script
+  type="text/x-red"
+  data-help-name="puppeteer-page-keyboard-type"
+></script>

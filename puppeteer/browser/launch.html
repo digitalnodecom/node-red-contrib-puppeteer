@@ -1,100 +1,100 @@
 <script type="text/javascript">
-    RED.nodes.registerType('puppeteer-browser-launch', {
-      category: 'Puppeteer',
-      color: '#ffd166',
-      defaults: {
-        timeout: {value: 30000},
-        slowMo: { value: 0 },
-        headless: { value: 0, require: true },
-        debugport: { value:0},
-        devtools: {value: false},
-        cookies: { value: '' },
-        name: { value: ''},
-      },
-      inputs:1,
-      outputs:1,
-      icon: "chrome.svg",
-      label: function() {
-          return this.name || "Launch";
-      },
-      paletteLabel: "Launch"
-    });
+  RED.nodes.registerType("puppeteer-browser-launch", {
+    category: "Puppeteer",
+    color: "#ffd166",
+    defaults: {
+      timeout: { value: 30000 },
+      slowMo: { value: 0 },
+      headless: { value: 0, require: true },
+      debugport: { value: 0 },
+      devtools: { value: false },
+      cookies: { value: "" },
+      name: { value: "" },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "chrome.svg",
+    label: function () {
+      return this.name || "Launch";
+    },
+    paletteLabel: "Launch",
+  });
 </script>
 
 <script type="text/x-red" data-template-name="puppeteer-browser-launch">
-    <div class="form-row">
-        <label for="node-input-timeout"><i class="fa fa-clock-o"></i> Timeout</label>
-        <input type="number" id="node-input-timeout" style="width:100px;" placeholder="30000" />
-        <span >milliseconds</span>
-    </div>
-    <div class="form-row">
-        <label for="node-input-slowMo"><i class="fa fa-step-forward"></i> Slow Motion</label>
-        <input type="number" id="node-input-slowMo" style="width:100px;" placeholder="0" />
-        <span >milliseconds</span>
-    </div>
-    <div class="form-row">
-        <label for="node-input-headless" style="width: auto !important; padding-right:10px"><i class="fa fa-low-vision"></i> Hide Chrome</label>
-        <input type="checkbox" id="node-input-headless" style="margin-top: 0; display:inline-block; width:auto;" />
-    </div>
-    <div class="form-row">
-        <label for="node-input-debugport"><i class="fa fa-bug"></i> Debug Port</label>
-        <input type="number" id="node-input-debugport" style="width:100px;" placeholder="0" />
-    </div>
-    <div class="form-row">
-        <label for="node-input-devtools" style="width: auto !important; padding-right:10px"><i class="fa fa-briefcase"></i> Show Devtools</label>
-        <input type="checkbox" id="node-input-devtools" style="margin-top: 0; display:inline-block; width:auto;" />
-    </div>
-    <div class="form-row">
-        <label for="node-input-cookies"><i class="fa fa-cubes"></i> Cookies</label>
-        <input type="text" id="node-input-cookies" style="width:70%;" placeholder="[{Cookie}, {Cookie}, ...]" />
-    </div>
-    <div class="form-row">
-          <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-          <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
-    </div>
-    <div class="form-tips">
-        <span data-i18n="[html]tip1">This node launches a chromium instance and sets cookies to it if specified. The cookies should be a list of cookie objects where each one has the following properties and they should be passed in as <code>msg.payload</code>, or if directly into the input field it should be a valid JSON list:
-          <ul>
-            <li><code>name: <span style="color: blue">string</span> | <u style="color: darkgreen">required</u></code></li>
-            <li><code>value: <span style="color: blue">string</span> | <u style="color: darkgreen">required</u></code></li>
-            <li><code>domain: <span style="color: blue">string</span> | <u style="color: darkgreen">required</u></code></li>
-            <li><code>path: <span style="color: blue">string</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: '/'</span></code></li>
-            <li><code>expires: <span style="color: blue">number</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: -1</span></code></li>
-            <li><code>size: <span style="color: blue">number</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: {cookie size}</span></code></li>
-            <li><code>httpOnly: <span style="color: blue">boolean</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: false</span></code></li>
-            <li><code>secure: <span style="color: blue">boolean</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: false</span></code></li>
-            <li><code>session: <span style="color: blue">boolean</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: true</span></code></li>
-            <li><code>sameSite: <span style="color: blue">string</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: undefined</span></code></li>
-            <li><code>sameParty: <span style="color: blue">boolean</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: false</span></code></li>
-            <li><code>sourceScheme: <span style="color: blue">string</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: 'NonSecure'</span></code></li>
-            <li><code>sourcePort: <span style="color: blue">number</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: 80</span></code></li>
-        </span>
+  <div class="form-row">
+      <label for="node-input-timeout"><i class="fa fa-clock-o"></i> Timeout</label>
+      <input type="number" id="node-input-timeout" style="width:100px;" placeholder="30000" />
+      <span >milliseconds</span>
+  </div>
+  <div class="form-row">
+      <label for="node-input-slowMo"><i class="fa fa-step-forward"></i> Slow Motion</label>
+      <input type="number" id="node-input-slowMo" style="width:100px;" placeholder="0" />
+      <span >milliseconds</span>
+  </div>
+  <div class="form-row">
+      <label for="node-input-headless" style="width: auto !important; padding-right:10px"><i class="fa fa-low-vision"></i> Hide Chrome</label>
+      <input type="checkbox" id="node-input-headless" style="margin-top: 0; display:inline-block; width:auto;" />
+  </div>
+  <div class="form-row">
+      <label for="node-input-debugport"><i class="fa fa-bug"></i> Debug Port</label>
+      <input type="number" id="node-input-debugport" style="width:100px;" placeholder="0" />
+  </div>
+  <div class="form-row">
+      <label for="node-input-devtools" style="width: auto !important; padding-right:10px"><i class="fa fa-briefcase"></i> Show Devtools</label>
+      <input type="checkbox" id="node-input-devtools" style="margin-top: 0; display:inline-block; width:auto;" />
+  </div>
+  <div class="form-row">
+      <label for="node-input-cookies"><i class="fa fa-cubes"></i> Cookies</label>
+      <input type="text" id="node-input-cookies" style="width:70%;" placeholder="[{Cookie}, {Cookie}, ...]" />
+  </div>
+  <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
+  </div>
+  <div class="form-tips">
+      <span data-i18n="[html]tip1">This node launches a chromium instance and sets cookies to it if specified. The cookies should be a list of cookie objects where each one has the following properties and they should be passed in as <code>msg.payload</code>, or if directly into the input field it should be a valid JSON list:
+        <ul>
+          <li><code>name: <span style="color: blue">string</span> | <u style="color: darkgreen">required</u></code></li>
+          <li><code>value: <span style="color: blue">string</span> | <u style="color: darkgreen">required</u></code></li>
+          <li><code>domain: <span style="color: blue">string</span> | <u style="color: darkgreen">required</u></code></li>
+          <li><code>path: <span style="color: blue">string</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: '/'</span></code></li>
+          <li><code>expires: <span style="color: blue">number</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: -1</span></code></li>
+          <li><code>size: <span style="color: blue">number</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: {cookie size}</span></code></li>
+          <li><code>httpOnly: <span style="color: blue">boolean</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: false</span></code></li>
+          <li><code>secure: <span style="color: blue">boolean</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: false</span></code></li>
+          <li><code>session: <span style="color: blue">boolean</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: true</span></code></li>
+          <li><code>sameSite: <span style="color: blue">string</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: undefined</span></code></li>
+          <li><code>sameParty: <span style="color: blue">boolean</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: false</span></code></li>
+          <li><code>sourceScheme: <span style="color: blue">string</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: 'NonSecure'</span></code></li>
+          <li><code>sourcePort: <span style="color: blue">number</span> | <u style="color: orange">optional</u>, </br> <span style="color: black"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Default value: 80</span></code></li>
+      </span>
 
-      </div>
+    </div>
 </script>
 
 <script type="text/x-red" data-help-name="puppeteer-browser-launch">
-    <p>Launch Chrome browser</p>
-    <h3>Inputs</h3>
-    <dl class="message-properties">
-        <dt>Timeout<span class="property-type">number</span></dt>
-        <dd>Maximum time in milliseconds to wait for the browser instance to start. Defaults to <code>30000</code> (30 seconds). Pass <code>0</code> to disable timeout.</dd>
-        <dt>Slow Motion<span class="property-type">number</span></dt>
-        <dd>Slows down Puppeteer operations by the specified amount of milliseconds. Useful so that you can see what is going on.</dd>
-        <dt>Hide Chrome<span class="property-type">boolean</span></dt>
-        <dd>Whether to run browser in <a href="https://developers.google.com/web/updates/2017/04/headless-chrome" rel="nofollow">headless mode</a>. Defaults to <code>false</code>, it will show Chrome when <code>devtools</code> option is <code>true</code>.</dd>
-        <dt>Debug Port<span class="property-type">number</span></dt>
-        <dd>Specify custom debugging port. It will connect to existing Chrome if port specified. Pass <code>0</code> to discover a random port. Defaults to <code>0</code>.</dd>
-        <dt>Show Devtools<span class="property-type">boolean</span></dt>
-        <dd>Whether to auto-open a DevTools panel for each tab. If this option is <code>true</code>, the <code>Hide Chrome</code> option will be set <code>false</code>.</dd>
-    </dl>
-    <h3>Outputs</h3>
-    <dl class="message-properties">
-        <dt>msg.puppeteer.browser<span class="property-type">object</span></dt>
-        <dd>The puppeteer browser object</dd>
-        <dt>msg.puppeteer.page<span class="property-type">object</span></dt>
-        <dd>The puppeteer page object</dd>
-    </dl>
-    <h3>Details</h3>
-        <p>Must launch Chrome browser before run any puppeteer actions</p>
+  <p>Launch Chrome browser</p>
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+      <dt>Timeout<span class="property-type">number</span></dt>
+      <dd>Maximum time in milliseconds to wait for the browser instance to start. Defaults to <code>30000</code> (30 seconds). Pass <code>0</code> to disable timeout.</dd>
+      <dt>Slow Motion<span class="property-type">number</span></dt>
+      <dd>Slows down Puppeteer operations by the specified amount of milliseconds. Useful so that you can see what is going on.</dd>
+      <dt>Hide Chrome<span class="property-type">boolean</span></dt>
+      <dd>Whether to run browser in <a href="https://developers.google.com/web/updates/2017/04/headless-chrome" rel="nofollow">headless mode</a>. Defaults to <code>false</code>, it will show Chrome when <code>devtools</code> option is <code>true</code>.</dd>
+      <dt>Debug Port<span class="property-type">number</span></dt>
+      <dd>Specify custom debugging port. It will connect to existing Chrome if port specified. Pass <code>0</code> to discover a random port. Defaults to <code>0</code>.</dd>
+      <dt>Show Devtools<span class="property-type">boolean</span></dt>
+      <dd>Whether to auto-open a DevTools panel for each tab. If this option is <code>true</code>, the <code>Hide Chrome</code> option will be set <code>false</code>.</dd>
+  </dl>
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+      <dt>msg.puppeteer.browser<span class="property-type">object</span></dt>
+      <dd>The puppeteer browser object</dd>
+      <dt>msg.puppeteer.page<span class="property-type">object</span></dt>
+      <dd>The puppeteer page object</dd>
+  </dl>
+  <h3>Details</h3>
+      <p>Must launch Chrome browser before run any puppeteer actions</p>
 </script>

@@ -1,31 +1,34 @@
 <script type="text/javascript">
-    RED.nodes.registerType('puppeteer-page-document-querySelector', {
-      category: 'puppeteerdocument',
-      color: '#06d6a0',
-      defaults: {
-        name: { value: '' },
-        selector:  { value: '', required: true },
-        selectortype:  { value: 'str'},
-        property:  { value: 'innerText', required: true }
-      },
-      inputs:1,
-      outputs:1,
-      icon: "fa-file-code-o.png",
-      label: function() {
-          return this.name || "querySelector";
-      },
-      paletteLabel: "querySelector",
-      oneditprepare: function() {
-        $("#node-input-selector").typedInput({
-          type:"str",
-          types:["str","msg","flow","global"],
-          typeField: "#node-input-selectortype"
-        })
-      }
-    });
+  RED.nodes.registerType("puppeteer-page-document-querySelector", {
+    category: "puppeteerdocument",
+    color: "#06d6a0",
+    defaults: {
+      name: { value: "" },
+      selector: { value: "", required: true },
+      selectortype: { value: "str" },
+      property: { value: "innerText", required: true },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "fa-file-code-o.png",
+    label: function () {
+      return this.name || "querySelector";
+    },
+    paletteLabel: "querySelector",
+    oneditprepare: function () {
+      $("#node-input-selector").typedInput({
+        type: "str",
+        types: ["str", "msg", "flow", "global"],
+        typeField: "#node-input-selectortype",
+      });
+    },
+  });
 </script>
 
-<script type="text/x-red" data-template-name="puppeteer-page-document-querySelector">
+<script
+  type="text/x-red"
+  data-template-name="puppeteer-page-document-querySelector"
+>
   <div class="form-row">
       <label for="node-input-selector">selector</label>
       <input id="node-input-selector"></input>
@@ -41,5 +44,7 @@
   </div>
 </script>
 
-<script type="text/x-red" data-help-name="puppeteer-page-document-querySelector">
-</script>
+<script
+  type="text/x-red"
+  data-help-name="puppeteer-page-document-querySelector"
+></script>

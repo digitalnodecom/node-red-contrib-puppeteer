@@ -1,27 +1,31 @@
 <script type="text/javascript">
-    RED.nodes.registerType('puppeteer-page-screenshot', {
-      category: 'Puppeteer',
-      color: '#118ab2',
-      defaults: {
-        name: { value: '' },
-        fullpage: {falue: false}
-      },
-      inputs:1,
-      outputs:1,
-      icon: "screenshot.svg",
-      label: function() {
-          return this.name || "Screenshot";
-      },
-      paletteLabel: "Screenshot"
-    });
-  
-    RED.comms.subscribe('puppeteer-screenshot', function(event, obj) {
-      $("puppeteer-screenshot-"+obj.id)?.remove()
-      const container = document.getElementById(obj.id)
-      const img = document.createElementNS("http://www.w3.org/2000/svg", 'image')
-      $(img).attr("id","puppeteer-screenshot-"+obj.id).attr('y', '45').attr('width', 160).attr('href', "data:image/png;base64,"+obj.image)
-      container.insertBefore(img, container.lastChild.nextSibling)
-    })
+  RED.nodes.registerType("puppeteer-page-screenshot", {
+    category: "Puppeteer",
+    color: "#118ab2",
+    defaults: {
+      name: { value: "" },
+      fullpage: { falue: false },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "screenshot.svg",
+    label: function () {
+      return this.name || "Screenshot";
+    },
+    paletteLabel: "Screenshot",
+  });
+
+  RED.comms.subscribe("puppeteer-screenshot", function (event, obj) {
+    $("puppeteer-screenshot-" + obj.id)?.remove();
+    const container = document.getElementById(obj.id);
+    const img = document.createElementNS("http://www.w3.org/2000/svg", "image");
+    $(img)
+      .attr("id", "puppeteer-screenshot-" + obj.id)
+      .attr("y", "45")
+      .attr("width", 160)
+      .attr("href", "data:image/png;base64," + obj.image);
+    container.insertBefore(img, container.lastChild.nextSibling);
+  });
 </script>
 
 <script type="text/x-red" data-template-name="puppeteer-page-screenshot">
@@ -36,17 +40,17 @@
 </script>
 
 <script type="text/x-red" data-help-name="puppeteer-page-screenshot">
-    <p>Capture Screen</p>
-    <h3>Inputs</h3>
-    <dl class="message-properties">
-        <dt>Capture Full Page<span class="property-type">boolean</span></dt>
-        <dd>When true, takes a screenshot of the full scrollable page. Defaults to <code>false</code>.</dd>
-    </dl>
-    <h3>Outputs</h3>
-    <dl class="message-properties">
-        <dt>msg.payload<span class="property-type">Buffer</span></dt>
-        <dd>buffer with captured screenshot.</dd>
-    </dl>
-    <h3>Details</h3>
-        <p>Browser screenshot, require focus / active to browser</p>
+  <p>Capture Screen</p>
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+      <dt>Capture Full Page<span class="property-type">boolean</span></dt>
+      <dd>When true, takes a screenshot of the full scrollable page. Defaults to <code>false</code>.</dd>
+  </dl>
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+      <dt>msg.payload<span class="property-type">Buffer</span></dt>
+      <dd>buffer with captured screenshot.</dd>
+  </dl>
+  <h3>Details</h3>
+      <p>Browser screenshot, require focus / active to browser</p>
 </script>

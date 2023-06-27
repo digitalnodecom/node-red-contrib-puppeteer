@@ -1,22 +1,21 @@
 <script type="text/javascript">
-    RED.nodes.registerType('puppeteer-page-close', {
-      category: 'Puppeteer',
-      color: '#ffd166',
-      defaults: {
-        name: { value: '' }
-      },
-      inputs:1,
-      outputs:1,
-      icon: "closetab.svg",
-      label: function() {
-          return this.name || "Close Tab";
-      },
-      paletteLabel: "Close Tab"
-    });
+  RED.nodes.registerType("puppeteer-page-close", {
+    category: "Puppeteer",
+    color: "#ffd166",
+    defaults: {
+      name: { value: "" },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "closetab.svg",
+    label: function () {
+      return this.name || "Close Tab";
+    },
+    paletteLabel: "Close Tab",
+  });
 </script>
 
-<script type="text/x-red" data-template-name="puppeteer-page-close">
-</script>
+<script type="text/x-red" data-template-name="puppeteer-page-close"></script>
 
 <script type="text/x-red" data-help-name="puppeteer-page-close">
   <div class="form-row">

@@ -1,19 +1,19 @@
 <script type="text/javascript">
-    RED.nodes.registerType('puppeteer-page-deleteCookies', {
-      category: 'Puppeteer',
-      color: '#06d6a0',
-      defaults: {
-        name: { value: '' },
-      },
-      inputs:1,
-      outputs:1,
-      icon: "deleteCookies.svg",
-      label: function() {
-        let label = this.name == "" ? "Delete Cookies" : this.name
-        return label || "Delete Cookies"
-      },
-      paletteLabel: "Delete Cookies",
-    });
+  RED.nodes.registerType("puppeteer-page-deleteCookies", {
+    category: "Puppeteer",
+    color: "#06d6a0",
+    defaults: {
+      name: { value: "" },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "deleteCookies.svg",
+    label: function () {
+      let label = this.name == "" ? "Delete Cookies" : this.name;
+      return label || "Delete Cookies";
+    },
+    paletteLabel: "Delete Cookies",
+  });
 </script>
 
 <script type="text/x-red" data-template-name="puppeteer-page-deleteCookies">

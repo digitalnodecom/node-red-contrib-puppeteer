@@ -1,28 +1,33 @@
 <script type="text/javascript">
-    RED.nodes.registerType('puppeteer-page-waitFor', {
-      category: 'Puppeteer',
-      color: '#06d6a0',
-      defaults: {
-        name: { value: '' },
-        selector:  { value: '', required: true },
-        selectortype: {value:'str'}
-      },
-      inputs:1,
-      outputs:1,
-      icon: "wait.svg",
-      label: function() {
-        let label = this.name==""?this.selectortype != "str"?this.selectortype+"."+this.selector:this.selector.replace(/.*[> ]/,""):this.name
-        return label || "Wait"
-      },
-      paletteLabel: "Wait",
-      oneditprepare: function() {
-        $("#node-input-selector").typedInput({
-          type:"str",
-          types:["str","msg","flow","global"],
-          typeField: "#node-input-selectortype"
-        })
-      }
-    });
+  RED.nodes.registerType("puppeteer-page-waitFor", {
+    category: "Puppeteer",
+    color: "#06d6a0",
+    defaults: {
+      name: { value: "" },
+      selector: { value: "", required: true },
+      selectortype: { value: "str" },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "wait.svg",
+    label: function () {
+      let label =
+        this.name == ""
+          ? this.selectortype != "str"
+            ? this.selectortype + "." + this.selector
+            : this.selector.replace(/.*[> ]/, "")
+          : this.name;
+      return label || "Wait";
+    },
+    paletteLabel: "Wait",
+    oneditprepare: function () {
+      $("#node-input-selector").typedInput({
+        type: "str",
+        types: ["str", "msg", "flow", "global"],
+        typeField: "#node-input-selectortype",
+      });
+    },
+  });
 </script>
 
 <script type="text/x-red" data-template-name="puppeteer-page-waitFor">
@@ -37,5 +42,4 @@
   </div>
 </script>
 
-<script type="text/x-red" data-help-name="puppeteer-page-waitFor">
-</script>
+<script type="text/x-red" data-help-name="puppeteer-page-waitFor"></script>

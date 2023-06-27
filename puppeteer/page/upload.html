@@ -1,35 +1,40 @@
 <script type="text/javascript">
-    RED.nodes.registerType('puppeteer-page-upload', {
-      category: 'Puppeteer',
-      color: '#fe6d73',
-      defaults: {
-        name: { value: '' },
-        selector:  { value: '', required: true },
-        selectortype:  { value: 'str'},
-        file:  { value: '', required: true },
-        filetype:  { value: 'str'}
-      },
-      inputs:1,
-      outputs:1,
-      icon: "upload.svg",
-      label: function() {
-        let label = this.name==""?this.filetype != "str"?this.filetype+"."+this.file:this.file.replace(/.*[\/\\]/,""):this.name
-        return label || "Upload"
-      },
-      paletteLabel: "Upload",
-      oneditprepare: function() {
-        $("#node-input-selector").typedInput({
-          type:"str",
-          types:["str","msg","flow","global"],
-          typeField: "#node-input-selectortype"
-        })
-        $("#node-input-file").typedInput({
-          type:"str",
-          types:["str","msg","flow","global"],
-          typeField: "#node-input-filetype"
-        })
-      }
-    });
+  RED.nodes.registerType("puppeteer-page-upload", {
+    category: "Puppeteer",
+    color: "#fe6d73",
+    defaults: {
+      name: { value: "" },
+      selector: { value: "", required: true },
+      selectortype: { value: "str" },
+      file: { value: "", required: true },
+      filetype: { value: "str" },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "upload.svg",
+    label: function () {
+      let label =
+        this.name == ""
+          ? this.filetype != "str"
+            ? this.filetype + "." + this.file
+            : this.file.replace(/.*[\/\\]/, "")
+          : this.name;
+      return label || "Upload";
+    },
+    paletteLabel: "Upload",
+    oneditprepare: function () {
+      $("#node-input-selector").typedInput({
+        type: "str",
+        types: ["str", "msg", "flow", "global"],
+        typeField: "#node-input-selectortype",
+      });
+      $("#node-input-file").typedInput({
+        type: "str",
+        types: ["str", "msg", "flow", "global"],
+        typeField: "#node-input-filetype",
+      });
+    },
+  });
 </script>
 
 <script type="text/x-red" data-template-name="puppeteer-page-upload">
@@ -49,5 +54,4 @@
   </div>
 </script>
 
-<script type="text/x-red" data-help-name="puppeteer-page-click">
-</script>
+<script type="text/x-red" data-help-name="puppeteer-page-click"></script>

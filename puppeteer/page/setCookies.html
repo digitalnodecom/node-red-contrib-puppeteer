@@ -1,20 +1,20 @@
 <script type="text/javascript">
-    RED.nodes.registerType('puppeteer-page-setCookies', {
-      category: 'Puppeteer',
-      color: '#06d6a0',
-      defaults: {
-        name: { value: '' },
-        cookies: { value: '' },
-      },
-      inputs:1,
-      outputs:1,
-      icon: "setCookies.svg",
-      label: function() {
-        let label = this.name == "" ? "Set Cookies" : this.name
-        return label || "Set Cookies"
-      },
-      paletteLabel: "Set Cookies",
-    });
+  RED.nodes.registerType("puppeteer-page-setCookies", {
+    category: "Puppeteer",
+    color: "#06d6a0",
+    defaults: {
+      name: { value: "" },
+      cookies: { value: "" },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "setCookies.svg",
+    label: function () {
+      let label = this.name == "" ? "Set Cookies" : this.name;
+      return label || "Set Cookies";
+    },
+    paletteLabel: "Set Cookies",
+  });
 </script>
 
 <script type="text/x-red" data-template-name="puppeteer-page-setCookies">

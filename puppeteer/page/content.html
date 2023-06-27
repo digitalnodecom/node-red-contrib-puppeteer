@@ -1,18 +1,18 @@
 <script type="text/javascript">
-    RED.nodes.registerType('puppeteer-page-content', {
-      category: 'puppeteerpage',
-      color: '#118ab2',
-      defaults: {
-        name: { value: '' }
-      },
-      inputs:1,
-      outputs:1,
-      icon: "fa-file-code-o.png",
-      label: function() {
-          return this.name || "content";
-      },
-      paletteLabel: "content"
-    });
+  RED.nodes.registerType("puppeteer-page-content", {
+    category: "puppeteerpage",
+    color: "#118ab2",
+    defaults: {
+      name: { value: "" },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "fa-file-code-o.png",
+    label: function () {
+      return this.name || "content";
+    },
+    paletteLabel: "content",
+  });
 </script>
 
 <script type="text/x-red" data-template-name="puppeteer-page-content">
@@ -22,5 +22,4 @@
   </div>
 </script>
 
-<script type="text/x-red" data-help-name="puppeteer-page-content">
-</script>
+<script type="text/x-red" data-help-name="puppeteer-page-content"></script>

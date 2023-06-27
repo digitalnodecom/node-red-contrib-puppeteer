@@ -1,37 +1,43 @@
 <script type="text/javascript">
-    RED.nodes.registerType('puppeteer-page-set-value', {
-      category: 'Puppeteer',
-      color: '#fe6d73',
-      defaults: {
-        name: { value: '' },
-        selector:  { value: '', required: true },
-        selectortype:  { value: 'str'},
-        value:  { value: '', required: true },
-        valuetype:  { value: 'str'}
-      },
-      inputs:1,
-      outputs:1,
-      icon: "set.svg",
-      label: function() {
-          let selector = this.selectortype != "str"?this.selectortype+"."+this.selector:this.selector.replace(/.*[> ]/,"")
-          let value = this.valuetype != "str"?this.valuetype+"."+this.value:this.value.replace(/.*[> ]/,"")
-          let label = this.name || selector+":"+value
-          return label==":"?"Set Value":label
-      },
-      paletteLabel: "Set Value",
-      oneditprepare: function() {
-        $("#node-input-selector").typedInput({
-          type:"str",
-          types:["str","msg","flow","global"],
-          typeField: "#node-input-selectortype"
-        })
-        $("#node-input-value").typedInput({
-          type:"str",
-          types:["str","msg","flow","global"],
-          typeField: "#node-input-valuetype"
-        })
-      }
-    });
+  RED.nodes.registerType("puppeteer-page-set-value", {
+    category: "Puppeteer",
+    color: "#fe6d73",
+    defaults: {
+      name: { value: "" },
+      selector: { value: "", required: true },
+      selectortype: { value: "str" },
+      value: { value: "", required: true },
+      valuetype: { value: "str" },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "set.svg",
+    label: function () {
+      let selector =
+        this.selectortype != "str"
+          ? this.selectortype + "." + this.selector
+          : this.selector.replace(/.*[> ]/, "");
+      let value =
+        this.valuetype != "str"
+          ? this.valuetype + "." + this.value
+          : this.value.replace(/.*[> ]/, "");
+      let label = this.name || selector + ":" + value;
+      return label == ":" ? "Set Value" : label;
+    },
+    paletteLabel: "Set Value",
+    oneditprepare: function () {
+      $("#node-input-selector").typedInput({
+        type: "str",
+        types: ["str", "msg", "flow", "global"],
+        typeField: "#node-input-selectortype",
+      });
+      $("#node-input-value").typedInput({
+        type: "str",
+        types: ["str", "msg", "flow", "global"],
+        typeField: "#node-input-valuetype",
+      });
+    },
+  });
 </script>
 
 <script type="text/x-red" data-template-name="puppeteer-page-set-value">
@@ -51,5 +57,4 @@
   </div>
 </script>
 
-<script type="text/x-red" data-help-name="puppeteer-page-set-value">
-</script>
+<script type="text/x-red" data-help-name="puppeteer-page-set-value"></script>
