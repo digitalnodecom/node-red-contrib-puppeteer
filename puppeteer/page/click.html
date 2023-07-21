@@ -66,6 +66,12 @@
       <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
       <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
   </div>
+  <div class="form-tips">
+    <span data-i18n="[html]tip1">
+      This node clicks on a specified selector. It fetches an element which matches the provided <code>selector</code>, scrolls it into view if needed and then uses <code>page.mouse</code> to click the element.
+      If there's no element matching <code>selector</code>, the node throws an error.
+    </span>
+  </div>
 </script>
 
 <script type="text/x-red" data-help-name="puppeteer-page-click">
@@ -82,6 +88,6 @@
           <dd>Specify custom debugging port. Pass <code>0</code> to discover a random port. Defaults to <code>0</code>.Time to wait between <code>mousedown</code> and <code>mouseup</code> in milliseconds. Defaults to 0.</dd>
       </dl>
       <h3>Details</h3>
-          <p>This method fetches an element with <code>selector</code>, scrolls it into view if needed, and then uses <code>page.mouse</code> to click in the center of the element.
-  If there's no element matching <code>selector</code>, the method throws an error.</p>
+          <p>This node fetches an element with <code>selector</code>, scrolls it into view if needed, and then uses <code>page.mouse</code> to click in the center of the element.
+  If there's no element matching <code>selector</code>, the node throws an error.</p>
 </script>

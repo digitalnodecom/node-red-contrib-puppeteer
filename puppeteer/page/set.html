@@ -55,6 +55,17 @@
     <input id="node-input-value"></input>
     <input type="hidden" id="node-input-valuetype"></input>
   </div>
+  <div class="form-tips">
+    <span data-i18n="[html]tip1">
+      This node fetches an element with <code>selector</code> and if the element is input field it changes its value to the value specified in the <code>Value</code> field.
+      If there's no element matching <code>selector</code>, the node throws an error.
+    </span>
+  </div>
 </script>
 
-<script type="text/x-red" data-help-name="puppeteer-page-set-value"></script>
+<script type="text/x-red" data-help-name="puppeteer-page-set-value">
+  <p>Set value to input field</p>
+  <h3>Details</h3>
+  <p>This node fetches an element with <code>selector</code> and if the element is input field it changes its value to the value specified in the <code>Value</code> field.
+    If there's no element matching <code>selector</code>, the node throws an error.</p>
+</script>

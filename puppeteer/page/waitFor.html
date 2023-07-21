@@ -40,6 +40,15 @@
       <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
       <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
   </div>
+  <div class="form-tips">
+    <span data-i18n="[html]tip1">
+      This node uploads a file(or more accurately specified filePath) specified with <code>Upload File</code> to the element speicified with the <code>selector</code> if it exists.
+    </span>
+  </div>
 </script>
 
-<script type="text/x-red" data-help-name="puppeteer-page-waitFor"></script>
+<script type="text/x-red" data-help-name="puppeteer-page-waitFor">
+  <p>Wait for selector</p>
+  <h3>Details</h3>
+  <p>This node awaits for element specified with <code>selector</code>. If the wait timeouts/element doesn't exist, this node throws an error</p>
+</script>

@@ -32,7 +32,7 @@
 
 <script type="text/x-red" data-template-name="puppeteer-page-keyboard-type">
   <div class="form-row">
-    <label for="node-input-text">text</label>
+    <label for="node-input-text">Text</label>
     <input id="node-input-text"></input>
     <input type="hidden" id="node-input-texttype"></input>
   </div>
@@ -40,9 +40,18 @@
       <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
       <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
   </div>
+  <div class="form-tips">
+    <span data-i18n="[html]tip1">
+      This node types the text specified in the <code>Text</text> input using the <code>puppeteer.page.keyboard.type</code> function
+    </span>
+  </div>
 </script>
 
 <script
   type="text/x-red"
   data-help-name="puppeteer-page-keyboard-type"
-></script>
+>
+  <p>Keyboard Type</p>
+  <h3>Details</h3>
+  <p>This node types the text specified in the <code>Text</code> input using the <code>puppeteer.page.keyboard.type</code> function.</p>
+</script>

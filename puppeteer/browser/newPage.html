@@ -9,10 +9,11 @@
     outputs: 1,
     icon: "newtab.svg",
     label: function () {
-      return this.name || "New Tab";
+      return this.name || "New Page";
     },
-    paletteLabel: "New Tab",
+    paletteLabel: "New Page",
   });
+
 </script>
 
 <script type="text/x-red" data-template-name="puppeteer-browser-newPage">
@@ -20,6 +21,15 @@
       <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
       <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
   </div>
+  <div class="form-tips">
+    <span data-i18n="[html]tip1">
+      This node creates/opens new page(tab) in existing chromium instance or rather <code>puppeteer.browser</code> object
+    </span>
+  </div>
 </script>
 
-<script type="text/x-red" data-help-name="puppeteer-browser-newPage"></script>
+<script type="text/x-red" data-help-name="puppeteer-browser-newPage">
+  <p>Open new page(tab) in chromium browser</p>
+  <h3>Details</h3>
+  <p>This node creates/opens new page(tab) in existing chromium instance or rather <code>puppeteer.browser</code> object</p>
+</script>

@@ -15,11 +15,20 @@
   });
 </script>
 
-<script type="text/x-red" data-template-name="puppeteer-page-close"></script>
-
 <script type="text/x-red" data-help-name="puppeteer-page-close">
   <div class="form-row">
       <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
       <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
   </div>
+  <div class="form-tips">
+    <span data-i18n="[html]tip1">
+      This node closes first chromium page(tab) provided with <code>puppeteer.browser</code> object
+    </span>
+  </div>
+</script>
+
+<script type="text/x-red" data-template-name="puppeteer-page-close">
+  <p>Close first chromium page(tab)</p>
+  <h3>Details</h3>
+  <p>This node closes first chromium page(tab) provided with <code>puppeteer.browser</code> object</p>
 </script>

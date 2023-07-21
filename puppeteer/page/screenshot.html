@@ -37,6 +37,14 @@
       <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
       <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
   </div>
+  <div class="form-tips">
+    <span data-i18n="[html]tip1">
+      This node takes a screenshot(captures screen) from the current page. If <code>Capture Full Page</code> flag is set, then the screenshot is from the full scrollable page. It deafults to <i><b>false</b></i>. The output from this node is:
+      <ul>
+        <li><code>msg.payload: <span style="color: blue">Buffer</span></code> - <b>buffer with captured screenshot</b></li>
+      </ul>
+    </span>
+  </div>
 </script>
 
 <script type="text/x-red" data-help-name="puppeteer-page-screenshot">

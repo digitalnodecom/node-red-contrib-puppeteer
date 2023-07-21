@@ -40,6 +40,17 @@
       <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
       <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
   </div>
+  <div class="form-tips">
+    <span data-i18n="[html]tip1">
+      This node fetches an element with <code>selector</code> and puts it in focus.
+      If there's no element matching <code>selector</code>, the node throws an error.
+    </span>
+  </div>
 </script>
 
-<script type="text/x-red" data-help-name="puppeteer-page-focus"></script>
+<script type="text/x-red" data-help-name="puppeteer-page-focus">
+  <p>Focus on element</p>
+  <h3>Details</h3>
+  <p>This node fetches an element with <code>selector</code> and puts it in focus.
+    If there's no element matching <code>selector</code>, the node throws an error.</p>
+</script>

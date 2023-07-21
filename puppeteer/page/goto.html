@@ -50,6 +50,18 @@
       <option value="networkidle2">networkidle2</option>
     </select>
   </div>
+  <div class="form-tips">
+    <span data-i18n="[html]tip1">
+      This node visits specified URL. There are three inputs from which the <code>Name</code> and <code>URL</code> are self-explanatory.
+      The <code>Wait Until</code> input on the other hand has some additional values that need to be further explained, and they are the following:
+      <ul>
+        <li><code>load</code> - consider navigation to be finished when the load event is fired</li>
+        <li><code>domcontentloaded</code> - consider navigation to be finished when the DOMContentLoaded event is fired</li>
+        <li><code>networkidle0</code> - consider navigation to be finished when there are no more than 0 network connections for at least 500 ms</li>
+        <li><code>networkidle2</code> - consider navigation to be finished when there are no more than 2 network connections for at least 500 ms</li>
+      </ul>
+    </span>
+  </div>
 </script>
 
 <script type="text/x-red" data-help-name="puppeteer-page-goto">
