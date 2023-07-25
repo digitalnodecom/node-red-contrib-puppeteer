@@ -1,4 +1,4 @@
-# node-red-contrib-puppeteer-new
+# @digitalnodecom/node-red-contrib-puppeteer
 
 ### Warning & Important!
 
@@ -14,9 +14,13 @@ Chrome browser automation (puppeteer) in node-red.
 
 # Credits
 
-## fork from
+## Original fork
 
 Thank you [oliverlorenz](https://github.com/oliverlorenz)! Pickup update from node-red-contrib-puppeteer
+
+## Forked from
+
+Thank you [d0uub](https://github.com/d0uub/)! Pickup update from node-red-contrib-puppeteer
 
 ## Screenshorts Node
 
@@ -24,8 +28,8 @@ Copy from [node-red-contrib-image-tools (node) - Node-RED (nodered.org)](https:/
 
 ## Icons
 
-by [fontawesome](https://fontawesome.com/license) 
+By [fontawesome](https://fontawesome.com/license)
 
 ## Palettes
 
-by [coolors.co](https://coolors.co/palette/ef476f-ffd166-06d6a0-118ab2-073b4c)
+By [coolors.co](https://coolors.co/palette/ef476f-ffd166-06d6a0-118ab2-073b4c)
