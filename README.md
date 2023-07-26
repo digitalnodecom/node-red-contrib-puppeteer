@@ -1,9 +1,7 @@
 # @digitalnodecom/node-red-contrib-puppeteer
 
-<img src="https://digitalnode.com/wp-content/themes/digitalnode/public/assets/images/logo.1f5845.svg" alt="drawing" width="150"/>
-</br>
-</br>
-<img src="https://user-images.githubusercontent.com/10379601/29446482-04f7036a-841f-11e7-9872-91d1fc2ea683.png" alt="drawing" height="100"/>
+<img src="https://digitalnode.com/wp-content/themes/digitalnode/public/assets/images/logo.1f5845.svg" alt="drawing" width="400"/>
+<img src="https://user-images.githubusercontent.com/10379601/29446482-04f7036a-841f-11e7-9872-91d1fc2ea683.png" alt="drawing" height="225"/>
 
 ### These node-red nodes expose puppeteer's API used for controlling Chrome/Chromium over the <a href='https://chromedevtools.github.io/devtools-protocol/'>DevTools Protocol</a>
 
